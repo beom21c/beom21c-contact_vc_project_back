@@ -5,6 +5,6 @@ app.get('/',(req,res)=>{
     res.send('hello aws!!!!')
 })
 
-app.listen(3000,()=>{
+app.listen(4000,()=>{
     console.log('server 3000 start')
 })
