@@ -1,19 +1,10 @@
-var express = require('express');
-var server = express();
+const express=require('express');
+const app = express();
 
-server.get('/cities.json', function(req, res){
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.write(JSON.stringify({insecticons : ["San Francisco","Amsterdam", "Berlin", "New York"]}));
-    res.end();
-});
+app.get('/',(req,res)=>{
+    res.send('hello aws!!!!')
+})
 
-server.get('/gukwha', function(req, res){
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.write(JSON.stringify({insecticons : ["으악!!!!!!!!!!!!!!!!"]}));
-    res.end();
-});
-
-var port = process.env.PORT || 4000;
-server.listen(port);
-
-module.exports = server;
+app.listen(3000,()=>{
+    console.log('server 3000 start')
+})
