@@ -1,2 +1,0 @@
-# beom21c-contact_vc_project_back
-beom21c/contact_vc_project_back
