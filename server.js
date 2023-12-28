@@ -1,14 +1,13 @@
 const express = require("express");
 // const bodyParser = require("body-parser"); /* deprecated */
 const cors = require("cors");
-const sql = require("./app/models/db");
+const sql = require("./server/models/db");
 const app = express();
 const bodyParser = require('body-parser')
-const { createProxyMiddleware } = require('http-proxy-middleware');
 const cookieParser = require('cookie-parser');
 
 
-const setUpLoginRoute = require('./app/routes/member.routes');
+const setUpLoginRoute = require('./server/routes/member.routes');
 
 app.use(express.static('public'));
 app.use(cookieParser());
