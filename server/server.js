@@ -51,4 +51,4 @@ app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
 
-server.listen(4002,()=>console.log(`listening 4002`))
+server.listen(80,()=>console.log(`listening 80`))
