@@ -1,49 +1,105 @@
 const express = require('express');
 const db = require('../db');
-const bcryptjs = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const router = express.Router();
+const jwt = require('../jwt-util');
 const randtoken = require('rand-token');
-/**
- * @description test
- */
+const authJwt = require("../authJWT");
+const refresh = require("../refresh");
 
+const secret = 'Co1nt9ac8tV358c'
+router.post("/signup", (req, res) => {
+    const {company, name, id, pw, position, email, phone} = req.body;
 
+    db.query('select * from member where id = ?', [id], (err, results) => {
 
-router.get('/', (req, res) => {
-    db.query('SELECT * FROM member', [], (err, rows) => {
         if (err) {
-            throw err;
+            return res.status(500).send('Database query error');
         }
-        res.send(rows);
-    });
+        if (results.length > 0) {
+            return res.status(400).send('ID already exists');
+        }
+    bcrypt
+        .genSalt(12)
+        .then((salt) => {
+            return bcrypt.hash(pw, salt);
+        })
+        .then((hash) => {
+            db.query('insert into member(company, name, id, pw, position, email, phone)  value(?,?,?,?,?,?,?)', [company, name, id, hash, position, email, phone], (err, rows) => {
+                if (err) {
+                    return res.status(500).send('Error inserting data');
+                }
+                res.send('Data inserted successfully');
+            });
+            });
+        })
 });
 
 
 /**
  * @description Login
  */
-// router.post('/signin', (req, res) => {
-//     const {email, pw} = req.body;
-//     db.query('SELECT * FROM member where email = ? and pw = ? ', [email, pw], (err, rows) => {
-//         if (err) {
-//             throw err;
-//         }
-//         if(rows.length === 1){
-//             const token = randtoken.uid(256);
-//             db.query('UPDATE member SET token = ? WHERE uid = ?', [token, rows[0].uid]);
-//             let parameter = {
-//                 accessToken : token,
-//                 resultType : 'success'
-//             }
-//             res.send(parameter);
-//         }else{
-//             let parameter = {
-//                 resultType : 'fail'
-//             }
-//             res.send(parameter);
-//         }
-//     });
-// });
+router.post('/signin', (req, res) => {
+    const errors = {};
+    const { id, pw} = req.body;
+    db.query('select * from member where id = ? ', [id], async (err, results) => {
+
+        if (err) {
+            return res.status(500).send('Database query error');
+        }
+        if (!(results.length > 0)) {
+            console.log('!!!!')
+        }
+
+
+
+        isMatch = await bcrypt.compare(pw, results[0].pw);
+        if (!isMatch) {
+            errors.message = "Password is incorrect";
+            return res.status(400).json(errors);
+        }
+
+        const payload = {
+            id: results[0].id,
+            username: results[0].name
+        };
+        const accessToken = jwt.sign(payload);
+        const refreshToken = jwt.refresh();
+
+        if (!accessToken) {
+            return res.status(500)
+                .json({ error: "Error signing token",
+                    raw: err });
+        }
+
+        res.status(200).send({ // client에게 토큰 모두를 반환합니다.
+            ok: true,
+            data: {
+                accessToken,
+                refreshToken,
+            },
+        });
+    });
+});
+
+
+router.post('/me', authJwt, async function(req, res, next) {
+
+    db.query('select * from member where id = ? ', [req.id], async (err, results) => {
+        if (err) {
+            return res.status(500).send('Database query error');
+        }
+        if (!(results.length > 0)) {
+            console.log('!!!!')
+        }
+        const {company, name, id, position , email, phone} = results[0];
+        res.status(200).json({company, name, id, position , email, phone});
+    });
+
+});
+
+router.get('/refresh', refresh);
+
 
 // router.get("/me", (req, res) => {
 //     let value = req.query;
@@ -80,9 +136,6 @@ router.get('/', (req, res) => {
 // });
 
 
-
-
-
 // router.post("/signup", (req, res) => {
 //     let value = req.body;
 //
@@ -97,7 +150,6 @@ router.get('/', (req, res) => {
 //
 //     });
 // });
-
 
 
 module.exports = router;
