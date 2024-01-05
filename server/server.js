@@ -13,7 +13,7 @@ const router = express.Router();
 // server instance
 const server = http.createServer(app);
 
-const allowlist = ['http://localhost', 'http://localhost:3000'];
+const allowlist = ['http://localhost', 'http://localhost:3000', 'https://contact-vc-current.vercel.app'];
 
 
 app.use(express.static('public'));
