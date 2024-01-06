@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const port = 6000;
+const port = 8080;
 const member = require('./module/member');
 const vc = require('./module/vc');
 
