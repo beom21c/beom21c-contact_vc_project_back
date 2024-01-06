@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const port = 8080;
+const port = 80;
 const member = require('./module/member');
 const vc = require('./module/vc');
 
@@ -39,7 +39,26 @@ app.use('/vc', vc);
 
 
 router.get("/", (req, res) => {
-   console.log('!!!!!!!!!!')
+    let value = req.query;
+    console.log(value,'val');
+    db.query('SELECT * FROM member where token = ?', [value.token], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        if(rows.length === 1){
+            let parameter = {
+                userInfo : rows,
+                resultType : 'success'
+            }
+            res.send(parameter);
+        }else{
+            let parameter = {
+                resultType : 'fail'
+            }
+            res.send(parameter);
+        }
+    });
+
 });
 
 
@@ -58,8 +77,6 @@ function scheduleGc() {
 scheduleGc();
 
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-});
+app.listen(80);
 
-server.listen(80,()=>console.log(`listening 80`))
+// server.listen(port,()=>console.log(`listening 4002`))
