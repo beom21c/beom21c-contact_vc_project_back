@@ -38,28 +38,9 @@ app.use('/vc', vc);
 
 
 
-// router.get("/me", (req, res) => {
-//     let value = req.query;
-//     console.log(value,'val');
-//     db.query('SELECT * FROM member where token = ?', [value.token], (err, rows) => {
-//         if (err) {
-//             throw err;
-//         }
-//         if(rows.length === 1){
-//             let parameter = {
-//                 userInfo : rows,
-//                 resultType : 'success'
-//             }
-//             res.send(parameter);
-//         }else{
-//             let parameter = {
-//                 resultType : 'fail'
-//             }
-//             res.send(parameter);
-//         }
-//     });
-//
-// });
+router.get("/", (req, res) => {
+   console.log('!!!!!!!!!!')
+});
 
 
 function scheduleGc() {
