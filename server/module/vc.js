@@ -11,7 +11,7 @@ router.get('/test', authJwt, async function(req, res, next) {
         // }
         // const users = await User.find(
         // ).populate({path:'liked', match: match}).populate({path:'likes'}).sort({'likes': -1});
-        // res.status(200).json(users);
+        res.status(200).json({test : '1234'});
 });
 
 module.exports = router;
