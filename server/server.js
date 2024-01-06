@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const port = 8000;
+const port = 6000;
 const member = require('./module/member');
 const vc = require('./module/vc');
 
@@ -80,4 +80,4 @@ app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
 
-server.listen(port,()=>console.log(`listening 80`))
+server.listen(port,(e)=>console.log(`listening ${port}`))
