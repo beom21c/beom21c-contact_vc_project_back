@@ -13,7 +13,7 @@ const router = express.Router();
 // server instance
 const server = http.createServer(app);
 
-const allowlist = ['http://localhost', 'http://localhost:3000', 'http://43.200.179.236:3000'];
+const allowlist = ['http://localhost', 'http://localhost:3000', 'http://ec2-43-200-179-236.ap-northeast-2.compute.amazonaws.com:3000'];
 
 
 app.use(express.static('public'));
