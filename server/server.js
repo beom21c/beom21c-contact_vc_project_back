@@ -3,6 +3,8 @@ const app = express();
 const http = require('http');
 const port = 80;
 const member = require('./module/member');
+const company = require('./module/company');
+const news = require('./module/news');
 const vc = require('./module/vc');
 
 const cors = require('cors');
@@ -33,6 +35,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 app.use(cookieParser('kakaoCooKiEKey'));
 
 app.use('/member', member);
+app.use('/company', company);
+app.use('/news', news);
 app.use('/vc', vc);
 
 
@@ -40,7 +44,6 @@ app.use('/vc', vc);
 
 router.get("/", (req, res) => {
     let value = req.query;
-    console.log(value,'val');
     db.query('SELECT * FROM member where token = ?', [value.token], (err, rows) => {
         if (err) {
             throw err;

@@ -11,11 +11,15 @@
   "description": "",
   "dependencies": {
     "app-root-path": "^3.0.0",
+    "axios": "^1.6.5",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.12",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "iconv": "^3.0.1",
+    "iconv-lite": "^0.6.3",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
@@ -23,6 +27,7 @@
     "passport-local": "^1.0.0",
     "rand-token": "^1.0.1",
     "randomstring": "^1.1.5",
+    "request": "^2.88.2",
     "winston": "^3.3.3"
   }
 }

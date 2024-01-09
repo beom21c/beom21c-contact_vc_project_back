@@ -7,9 +7,9 @@ const randtoken = require('rand-token');
 const authJwt = require("../authJWT");
 const refresh = require("../refresh");
 
-const secret = 'Co1nt9ac8tV358c'
+
 router.post("/signup", (req, res) => {
-    const {company, name, id, pw, position, email, phone} = req.body;
+    const {company, name, id, pw, position, email, phone, type} = req.body;
 
     db.query('select * from member where id = ?', [id], (err, results) => {
 
@@ -25,7 +25,7 @@ router.post("/signup", (req, res) => {
             return bcrypt.hash(pw, salt);
         })
         .then((hash) => {
-            db.query('insert into member(company, name, id, pw, position, email, phone)  value(?,?,?,?,?,?,?)', [company, name, id, hash, position, email, phone], (err, rows) => {
+            db.query('insert into member(company, name, id, pw, position, email, phone, type)  value(?,?,?,?,?,?,?,?)', [company, name, id, hash, position, email, phone, type], (err, rows) => {
                 if (err) {
                     return res.status(500).send('Error inserting data');
                 }
@@ -92,8 +92,8 @@ router.post('/me', authJwt, async function(req, res, next) {
         if (!(results.length > 0)) {
             console.log('!!!!')
         }
-        const {company, name, id, position , email, phone} = results[0];
-        res.status(200).json({company, name, id, position , email, phone});
+        const {company, name, id, position , email, phone, cid} = results[0];
+        res.status(200).json({company, name, id, position , email, phone, cid});
     });
 
 });
